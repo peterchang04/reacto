@@ -34,6 +34,9 @@ var Connector = (function(){
 			//console.log('QUEUE ' + text);
 			_Connector.tryRun();
 		},
+		getRequests:function(){
+			return this.requests;
+		},
 		executeStatement:function(r){
 			r.attempts++;
 			_Connector.currentRequest = r;
@@ -91,7 +94,7 @@ var Connector = (function(){
 		run:_Connector.addRequest,
 		newID:function(){
 			var guid = Guid.create();
-			return guid;
+			return guid+'';
 		},
 		Types:TYPES,
 		Query:Query
