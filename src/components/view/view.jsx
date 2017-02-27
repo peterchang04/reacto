@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import SideBar from './sideBar/sideBar.js';
-import NavBar from './navBar/navBar.js';
-import './view.css';
-
+import SideBar from './sideBar/sideBar';
+import NavBar from './navBar/navBar';
 
 class View extends Component {
   render() {

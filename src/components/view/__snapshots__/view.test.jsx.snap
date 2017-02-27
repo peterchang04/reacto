@@ -1,0 +1,175 @@
+exports[`test renders correctly 1`] = `
+<div
+  className="view">
+  <div
+    className="sidebar"
+    id="sidebar"
+    role="navigation">
+    <div
+      className="js-sidebar-content">
+      <header
+        className="logo hidden-sm-down">
+        <a
+          href="#">
+          Reacto
+        </a>
+      </header>
+      <ul
+        className="sidebar-nav">
+        <li
+          className="active">
+          <a
+            className="collapsed"
+            data-parent="#sidebar"
+            data-toggle="collapse"
+            href="#sidebar-Data">
+            <span
+              className="icon">
+              <i
+                className="glyphicon glyphicon-hdd" />
+            </span>
+            Data
+            <i
+              className="toggle fa fa-angle-down" />
+          </a>
+          <ul
+            className="collapse"
+            id="sidebar-Data">
+            <li>
+              <a
+                onClick={[Function]}
+                style={Object {}}>
+                People
+              </a>
+            </li>
+            <li>
+              <a
+                onClick={[Function]}
+                style={Object {}}>
+                Schools
+              </a>
+            </li>
+            <li>
+              <a
+                onClick={[Function]}
+                style={Object {}}>
+                School years
+              </a>
+            </li>
+            <li>
+              <a
+                onClick={[Function]}
+                style={Object {}}>
+                Enrollment
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li
+          className="">
+          <a
+            className="collapsed"
+            data-parent="#sidebar"
+            data-toggle="collapse"
+            href="#sidebar-Clients">
+            <span
+              className="icon">
+              <i
+                className="glyphicon glyphicon-link" />
+            </span>
+            Clients
+            <i
+              className="toggle fa fa-angle-down" />
+          </a>
+          <ul
+            className="collapse"
+            id="sidebar-Clients">
+            <li>
+              <a
+                onClick={[Function]}
+                style={Object {}}>
+                Browse
+              </a>
+            </li>
+            <li>
+              <a
+                onClick={[Function]}
+                style={Object {}}>
+                Subscriptions
+              </a>
+            </li>
+            <li>
+              <a
+                onClick={[Function]}
+                style={Object {}}>
+                Options
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <nav
+    className="page-controls navbar navbar-dashboard">
+    <div
+      className="container-fluid">
+      <div
+        className="navbar-header">
+        <ul
+          className="nav navbar-nav">
+          <li
+            className="nav-item">
+            <a
+              className="hidden-md-down nav-link"
+              data-html="true"
+              data-original-title="Turn<br>on/off<br>sidebar<br>collapsing"
+              data-placement="bottom"
+              data-toggle="tooltip"
+              href="#"
+              id="nav-state-toggle">
+              <i
+                className="fa fa-bars fa-lg" />
+            </a>
+            <a
+              className="hidden-lg-up nav-link"
+              data-html="true"
+              data-placement="bottom"
+              href="#"
+              id="nav-collapse-toggle"
+              title="Show/hide<br>sidebar">
+              <span
+                className="rounded rounded-lg bg-gray text-white hidden-md-up">
+                <i
+                  className="fa fa-bars fa-lg" />
+              </span>
+              <i
+                className="fa fa-bars fa-lg hidden-sm-down" />
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div
+        className="collapse navbar-collapse" />
+    </div>
+  </nav>
+  <div
+    className="content-wrap">
+    <main
+      className="content"
+      id="content"
+      role="main">
+      <ol
+        className="breadcrumb">
+        <li>
+          VIEWING
+        </li>
+        <li
+          className="active">
+          xx
+        </li>
+      </ol>
+    </main>
+  </div>
+</div>
+`;

@@ -51,7 +51,7 @@ class Query {
 		return type;
 	}
 	_sanitize(str){
-		str.replace(/\s+/g,' ');
+		// str.replace(/\s+/g,' '); // this removes and double spaces
 		return str;
 	}
 }

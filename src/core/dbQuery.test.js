@@ -16,10 +16,21 @@ it('Knows when a type is invalid', (done) => {
 			{personID:['invalid',false]}
 		);
 	}catch(e){
-		console.log('keys and values');
-		for(var k in e){
-			console.log(k + ' = ' + e[k]);
-		}
+		expect(e.substring(0,22)).toEqual('Invalid type [invalid]');
+		done();
 	}
-		
+});
+
+it('Catches required keys when defined', (done) => {
+	expect.assertions(1);
+	try{
+		var q = new Query(
+			'select top 5 * from person',
+			{}, // no personID
+			{personID:['invalid',true]}
+		);
+	}catch(e){
+		expect(e).toEqual('personID is required.');
+		done();
+	}
 });

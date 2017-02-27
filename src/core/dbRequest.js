@@ -12,5 +12,17 @@ class Request {
 		this.cb = cb;
 		this.attempts = 0;
 	}
+	getParams(){
+		return this.params;
+	}
+	getAttempts(){
+		return this.attempts;
+	}
+	getText(){
+		return this.text;
+	}
+	getCB(){
+		return this.cb;
+	}
 }
 module.exports = Request;

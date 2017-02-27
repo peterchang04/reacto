@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import View from './components/view/view.js';
+import View from './components/view/view';
 import {Router, IndexRoute, Route, Link, browserHistory} from 'react-router';
 
 const Guppy = () => <h1 className="page-title">List - <span className="fw-semi-bold">Guppy</span></h1>;
