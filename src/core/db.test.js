@@ -1,4 +1,4 @@
-var db = require('./dbConnect');
+var db = require('./db');
 var Types = require('tedious').TYPES;
 
 it('Can add request and execute query', (done) => {

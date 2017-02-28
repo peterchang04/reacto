@@ -2,8 +2,8 @@ var Connection = require('tedious').Connection;
 var Request = require('tedious').Request;  
 var TYPES = require('tedious').TYPES;
 var Guid = require('guid');
-var dbRequest = require('./dbRequest');
-var dbConfig = require('./config').db;
+var dbRequest = require('./dbQueryRequest');
+var dbConfig = require('./conf').db;
 var Query = require('./dbQuery');
 
 var Connector = (function(){
@@ -24,6 +24,7 @@ var Connector = (function(){
 		tryRun:function(){
 			if(_Connector.requests.length > 0 && _Connector.connected && _Connector.currentRequest == null){
 				var r = _Connector.requests.shift();
+
 				//console.log('TRY '+s.text);
 				_Connector.executeStatement(r);
 			}
@@ -31,6 +32,7 @@ var Connector = (function(){
 		addRequest:function(text,params,cb){
 			var s = new dbRequest(text,params,cb);
 			_Connector.requests.push(s);
+
 			//console.log('QUEUE ' + text);
 			_Connector.tryRun();
 		},
@@ -71,10 +73,18 @@ var Connector = (function(){
 
 			// append any params
 			r.params.forEach(function(param){
-				request.addParameter(param[0],param[1],param[2]);
+				if(param[1].name === 'DateTime' && param[2] === 'getDate()'){
+					/* do not parameterize. This is an exception to rule */
+				} else {
+					request.addParameter(param[0],param[1],param[2]);
+				}
 			});
 
 			// run it
+			console.log(r.text);
+			r.params.forEach(function(param){
+				console.log('@'+param[0] + ' = ' + param[2]);
+			});
 			_Connector.connection.execSql(request);  
 		}
 	};

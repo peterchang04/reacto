@@ -1,4 +1,4 @@
-/* Represents a database request queued for running */
+/* Represents a query request queued for running */
 class Request {
 	constructor(text,params,cb){
 		// get rid of hidden chars
