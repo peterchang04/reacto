@@ -60,4 +60,3 @@ it('test multiple queries will return', (done) => {
 		}
 	);
 });
-

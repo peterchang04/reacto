@@ -18,51 +18,32 @@ class RestListener{
 		this.app.use(bodyParser.urlencoded({extended:true}));
 		this.app.use(bodyParser.json());
 
-
 		this.app.all(['/api/*','/api'], function (req, res) {
-			var method = req.method.toLowerCase(); // get put delete post etc
 			var path = context._toPath(req.url); // array representing the rest nodes
-			var args = {}; // args to pass to eventual func
-			var resName = "entity";
-			var func = method; // the base function
+			var func = context._getFunc(req.method,path); // the base function
+			var args = context._getArgs(path,req);
+
 			// [0] is the file for resource to require
-			try{
-				var resource = require('../data/'+path[0]+'DAO');
-				resName = path[0]; // e.g. personID, cityID
-				func = context._getFunc(method,resName); // e.g. getPerson, postPerson
-				path.shift();
-			}catch(e){
-				console.log(e);
+			var resource = context._getResource(path);
+			if(resource === null){
 				return context._sendError(res,"Invalid",path[0] + ' is not a valid resource [1]');
 			}
 
-			// loop through the path to build args and function name
-			path.forEach(function(item){
-				if(!item){return;} // exit if no item
-				if(item >>> 0 === parseFloat(item) || (item.length === 36 && item.indexOf('-') === 8)){ // is positive integer or GUID
-					args["id"] = item;
-				} else {
-					resName = item;
-					func = context._getFunc(method,resName);
-				}
-			});
-
 			// see if this function exists
-			var hasFunction = false;
 			if(!(func in resource)){
 				console.log("function " + func + " not found");
-				return context._sendError(res,"Invalid",resName + ' is not a valid resource [2]');
+				return context._sendError(res,"Invalid",func + ' is not a valid method [2]');
 			}
 
 			// finally, call the motherfucker
 			resource[func](function(results,err){
-				if(err){
-					console.log(e);
-					return context._sendError(res,"Bad Request",'Something went wrong...');
-				}
-				// success
-				res.status(200);
-				res.json(results)
+			if(err){
+				console.log(e);
+				return context._sendError(res,"Bad Request",'Something went wrong...');
+			}
+			// success
+			res.status(200);
+			res.json(results)
 			},args);
 		});
 
@@ -76,7 +57,6 @@ class RestListener{
 			var port = context.server.address().port
 
 			console.log("Example app listening at http://%s:%s", host, port)
-			console.log(restConf);
 		});
 	}
 	_toPath(url){
@@ -91,14 +71,70 @@ class RestListener{
 		if(result[0] === "api"){
 			result.shift();
 		}
+		// get rid of empty nodes
+		if(result[result.length-1] === ''){
+			result.pop();
+		}
 		return result;
 	}
 	_sendError(res,message = "Bad Request",detail = "",status = 400){
 		res.status(status);
 		res.json({message:message,detail:detail});
 	}
-	_getFunc(method,resource){
-		return method.toLowerCase() + resource.charAt(0).toUpperCase() + resource.substring(1,resource.length);
+	_getFunc(method,path){
+	var resource = '';
+	path.forEach(function(pathNode){
+		if(pathNode >>> 0 === parseFloat(pathNode) || (pathNode.length === 36 && pathNode.indexOf('-') === 8)){ // is positive integer or GUID
+			/* do nothing*/
+		} else {
+			resource = pathNode;
+		}
+	});
+	return method.toLowerCase() + resource.charAt(0).toUpperCase() + resource.substring(1,resource.length);
+	}
+	_getArgs(pathArray,req){
+		var args = {};
+		// find the subject node (it's the last non identifier on path nodes)
+		var subject = "";
+		pathArray.forEach(function(pathNode){
+			if(pathNode >>> 0 === parseFloat(pathNode) || (pathNode.length === 36 && pathNode.indexOf('-') === 8)){ // is positive integer or GUID
+			/* do nothing */
+			} else {
+				subject = pathNode;
+			}
+		});
+
+		// now sort and identifiables into args
+		var curSubject = '';
+		pathArray.forEach(function(pathNode){
+			if(pathNode >>> 0 === parseFloat(pathNode) || (pathNode.length === 36 && pathNode.indexOf('-') === 8)){ // is positive integer or GUID
+				if(curSubject === subject){ // the subject becomes just ID instead of subject_id
+					curSubject = '';
+				}
+				var argName = _.snakeCase(curSubject+'Id');
+				args[argName] = pathNode;
+			} else{
+				curSubject = pathNode;
+			}
+		});
+
+		// attempt to get args out of request
+		var reqArgs = {};
+		try{
+			reqArgs = req.body;
+		}catch(e){}
+
+		// merge args and reqArgs
+		return Object.assign({},args,reqArgs);
+	}
+	_getResource(pathArray){
+		var resource = null;
+		try{
+			resource = require('../data/'+pathArray[0]+'DAO');
+		}catch(e){
+			console.log(e);
+		}
+		return resource;
 	}
 	close(){
 		console.log('....aaand we\'re done');

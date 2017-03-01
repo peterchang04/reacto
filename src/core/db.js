@@ -2,7 +2,7 @@ var Connection = require('tedious').Connection;
 var Request = require('tedious').Request;  
 var TYPES = require('tedious').TYPES;
 var Guid = require('guid');
-var dbRequest = require('./dbQueryRequest');
+var dbRequest = require('./dbRequest');
 var dbConfig = require('./conf').db;
 var Query = require('./dbQuery');
 
@@ -53,7 +53,6 @@ var Connector = (function(){
 					if(_Connector.currentRequest.attempts < 2){
 						_Connector.requests.push(r);
 					}
-
 				/* SUCCESS */
 				} else if(typeof r.cb === 'function'){
 					r.cb(_Connector.result,err);
@@ -81,10 +80,6 @@ var Connector = (function(){
 			});
 
 			// run it
-			console.log(r.text);
-			r.params.forEach(function(param){
-				console.log('@'+param[0] + ' = ' + param[2]);
-			});
 			_Connector.connection.execSql(request);  
 		}
 	};

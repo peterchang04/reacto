@@ -11,11 +11,11 @@ begin
 		[Last_Name] varchar(100) not null,
 		[Birth_Date] datetime null,
 		[Photo_Key] varchar(1000) null,
-		[City_ID] int null foreign key references state(id),
-		[Active] [bit] NULL,
-		[Created] [datetime] NULL,
+		[City_ID] int null foreign key references city(id),
+		[Active] [bit] not NULL default 1,
+		[Created_On] [datetime] NULL,
 		[Created_By] [int] NULL,
-		[Modified] [datetime] NULL,
+		[Modified_On] [datetime] NULL,
 		[Modified_By] [int] NULL
 	)
 end

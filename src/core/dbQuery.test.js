@@ -21,6 +21,24 @@ it('Knows when a type is invalid', (done) => {
 	}
 });
 
+it('Can instantiate all types', () => {
+	expect.assertions(7);
+	var q = new Query('select top 5 * from person');
+	var typesToTest = [
+		'Int',
+		'Uniqueidentifier',
+		'Money',
+		'Decimal',
+		'Bit',
+		'DateTime',
+		'VarChar'
+	];
+	typesToTest.forEach(function(type){
+		var t = q._getType(type.toLowerCase());
+		expect(t.name.substring(0,type.length).toLowerCase()).toEqual(type.toLowerCase());
+	});
+});
+
 it('Catches required keys when defined', (done) => {
 	expect.assertions(1);
 	try{

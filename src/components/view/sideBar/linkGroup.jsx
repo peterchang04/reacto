@@ -11,7 +11,7 @@ class LinkGroup extends Component {
 					<span className="icon">
 						<i className={"glyphicon glyphicon-"+this.props.icon}></i>
 					</span>
-					{this.props.name}
+					{_.startCase(this.props.name)}
 					<i className="toggle fa fa-angle-down"></i>
 				</a>
 				<ul id={"sidebar-"+this.props.name} className="collapse">

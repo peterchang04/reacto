@@ -1,18 +1,18 @@
 if not exists (
 	select column_name
 	from information_schema.columns
-	where table_name = 'state (name,abbrev)'
+	where table_name = 'state'
 )
 begin
-	CREATE TABLE [dbo].[state](
+	CREATE TABLE [dbo].[State](
 		[ID] [int] identity(1,1) primary key,
 		[Name] varchar(100) not null,
 		[Abbrev] varchar(100) null,
 		[City] varchar(100) null,
-		[Active] [bit] not NULL,
-		[Created] [datetime] NULL,
+		[Active] [bit] not NULL default 1,
+		[Created_On] [datetime] NULL,
 		[Created_By] [int] NULL,
-		[Modified] [datetime] NULL,
+		[Modified_On] [datetime] NULL,
 		[Modified_By] [int] NULL
 	)
 

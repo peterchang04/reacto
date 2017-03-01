@@ -1,4 +1,4 @@
-var Request = require('./dbQueryRequest');
+var Request = require('./dbRequest');
 
 it('Can instantiate a request object with callback',() => {
 	var r = new Request('select * from user',{personID:1});

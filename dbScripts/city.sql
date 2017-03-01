@@ -8,15 +8,13 @@ begin
 		[ID] [int] identity(1,1) primary key,
 		[Name] varchar(100) not null,
 		[State_ID] int not null foreign key references State(id),
-		[Active] [bit] NULL,
-		[Created] [datetime] NULL,
+		[Active] [bit] not NULL default 1,
+		[Created_On] [datetime] NULL,
 		[Created_By] [int] NULL,
-		[Modified] [datetime] NULL,
+		[Modified_On] [datetime] NULL,
 		[Modified_By] [int] NULL
 	)
-
-	
-
+	/*
 	INSERT into city (name, state_id) VALUES ('Aaronsburg', (select id from state where abbrev = 'PA'));
 	INSERT into city (name, state_id) VALUES ('Abbeville', (select id from state where abbrev = 'AL'));
 	INSERT into city (name, state_id) VALUES ('Abbeville', (select id from state where abbrev = 'GA'));
@@ -9099,9 +9097,9 @@ begin
 	INSERT into city (name, state_id) VALUES ('Flint', (select id from state where abbrev = 'TX'));
 	INSERT into city (name, state_id) VALUES ('Flint Hill', (select id from state where abbrev = 'VA'));
 	INSERT into city (name, state_id) VALUES ('Flinthill', (select id from state where abbrev = 'MO'));
-	INSERT INTO citiesname, state_id) VALUES ('Flinton', (select id from state where abbrev = 'PA'));
-	INSERT INTO citiesname, state_id) VALUES ('Flintstone', (select id from state where abbrev = 'GA'));
-	INSERT INTO citiesname, state_id) VALUES ('Flintstone', (select id from state where abbrev = 'MD'));
+	INSERT INTO city (name, state_id) VALUES ('Flinton', (select id from state where abbrev = 'PA'));
+	INSERT INTO city (name, state_id) VALUES ('Flintstone', (select id from state where abbrev = 'GA'));
+	INSERT INTO city (name, state_id) VALUES ('Flintstone', (select id from state where abbrev = 'MD'));
 	INSERT into city (name, state_id) VALUES ('Flintville', (select id from state where abbrev = 'TN'));
 	INSERT into city (name, state_id) VALUES ('Flippin', (select id from state where abbrev = 'AR'));
 	INSERT into city (name, state_id) VALUES ('Flom', (select id from state where abbrev = 'MN'));
@@ -29754,5 +29752,5 @@ begin
 	INSERT into city (name, state_id) VALUES ('Zuni', (select id from state where abbrev = 'VA'));
 	INSERT into city (name, state_id) VALUES ('Zurich', (select id from state where abbrev = 'MT'));
 	INSERT into city (name, state_id) VALUES ('Zwingle', (select id from state where abbrev = 'IA'));
-
+	*/
 end
