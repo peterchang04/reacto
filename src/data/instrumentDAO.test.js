@@ -5,7 +5,7 @@ var util = require('util');
 it('Needs some time for the Listener to spin up',function(done){
 	setTimeout(function(){
 		done();
-	},2000);
+	},700);
 });
 
 it('Can select all instruments',function(done){
@@ -45,3 +45,9 @@ it('Can search by name',function(done){
 	},{search:"violin"});
 });
 */
+it('Shut it off',function(done){
+	RL.close();
+	setTimeout(function(){
+		done();
+	},500);
+});

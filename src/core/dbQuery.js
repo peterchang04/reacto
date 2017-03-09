@@ -8,6 +8,20 @@ class Query {
 		[args, argDef]  // generates an insert or update statement depending on args
 	*/
 	constructor(text,args = {},argDef = {}){
+		// change all keys to lowercase
+		for(let key in args){
+			args[key.toLowerCase()] = args[key];
+			if(key !== key.toLowerCase()){
+				delete args[key];
+			}
+		}
+		for(let key in argDef){
+			argDef[key.toLowerCase()] = argDef[key];
+			if(key !== key.toLowerCase()){
+				delete argDef[key];
+			}
+		}
+
 		this.text = this._sanitize(text);
 		// check arguments for required
 		for(let key in argDef){
@@ -17,6 +31,7 @@ class Query {
 		}
 		// format the args into array
 		this.params = [];
+		delete args.method; // this is never a real argument. used by restListener to override the method
 		for(let key in args){
 			/* make sure all keys are defined in argDef */
 			if(!(key in argDef)){

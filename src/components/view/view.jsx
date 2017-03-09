@@ -8,12 +8,15 @@ class View extends Component {
     	<div className="view">
 	    	<SideBar />
 	    	<NavBar />
+	    	
 	    	<div className="content-wrap">
 	    		<main id="content" className="content" role="main">
-					<ol className="breadcrumb">
+
+					{/*<ol className="breadcrumb">
 						<li>VIEWING</li>
 						<li className="active">xx</li>
-					</ol>
+					</ol>*/}
+
 					{this.props.children}
 	    		</main>
 	    	</div>

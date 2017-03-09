@@ -49,9 +49,12 @@ var Connector = (function(){
 				/* ERROR */
 				if(err){
 					err.text = r.text;
-					console.log(err);
 					if(_Connector.currentRequest.attempts < 2){
 						_Connector.requests.push(r);
+					} else{
+						console.log('DB executeStatement');
+						console.log(err);
+						r.cb([],err);
 					}
 				/* SUCCESS */
 				} else if(typeof r.cb === 'function'){
@@ -65,15 +68,26 @@ var Connector = (function(){
 				// sort the results
 				var rowData = {};
 				columns.forEach(function(column) {  
-					rowData[column.metadata.colName] = column.value;
+					rowData[column.metadata.colName.toLowerCase()] = column.value;
+					// bits should return as 1 or 0 instead of true / false
+					if(column.metadata.type.name === 'Bit'){
+						column.value = (column.value) ? 1 : 0;
+					}
 				});
 				_Connector.result.push(rowData);
 			});
 
 			// append any params
 			r.params.forEach(function(param){
+				if(param[1].name === 'Int' || param[1].name === 'Bit'){
+					param[2] = +param[2];
+				}
 				if(param[1].name === 'DateTime' && param[2] === 'getDate()'){
 					/* do not parameterize. This is an exception to rule */
+				} else if(param[1].name === 'DateTime'){
+					/* cast the value to date obj */
+					param[2] = new Date(param[2]);
+					request.addParameter(param[0],param[1],param[2]);
 				} else {
 					request.addParameter(param[0],param[1],param[2]);
 				}
@@ -102,7 +116,7 @@ var Connector = (function(){
 			return guid+'';
 		},
 		Types:TYPES,
-		Query:Query
+		Connection:_Connector.connection
 	};
 })();
 

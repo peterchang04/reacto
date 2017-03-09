@@ -1,7 +1,8 @@
 - add session jwt cookie
-- integrate with facebook auth
 - deploy on aws
-- finish functionality
 - design components
-- get redux to work
 - database caching?
+
+LATER
+- integrate with facebook auth
+- db transactions

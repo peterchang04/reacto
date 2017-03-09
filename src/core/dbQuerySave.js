@@ -2,6 +2,7 @@ var Query = require('./dbQuery');
 
 class Save extends Query{
 	constructor(args,argDef){
+		delete args.method; // this is used by httpRequest.
 		var text = Save._generateInsertModifyText(args);
 		super(text,args,argDef);
 	}

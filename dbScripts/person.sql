@@ -11,6 +11,8 @@ begin
 		[Last_Name] varchar(100) not null,
 		[Birth_Date] datetime null,
 		[Photo_Key] varchar(1000) null,
+		[Email] varchar(100) not null,
+		[Password] varchar(500) null,
 		[City_ID] int null foreign key references city(id),
 		[Active] [bit] not NULL default 1,
 		[Created_On] [datetime] NULL,
@@ -19,3 +21,4 @@ begin
 		[Modified_By] [int] NULL
 	)
 end
+

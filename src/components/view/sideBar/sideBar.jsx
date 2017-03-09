@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import LinkGroup from './linkGroup';
 import './sideBar.css';
+import note from './note_w.png';
 
 class SideBar extends Component {
 	render() {
@@ -11,7 +12,7 @@ class SideBar extends Component {
 			<div id="sidebar" className="sidebar" role="navigation">
 				<div className="js-sidebar-content">
 					<header className="logo hidden-sm-down">
-						<a href="#">Musician</a>
+						<a href="#"><img id="logo" src={note} role="presentation" />uz.io</a>
 					</header>
 
 					<ul className="sidebar-nav">

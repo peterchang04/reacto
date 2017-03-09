@@ -1,0 +1,67 @@
+.vertical-alignment-helper {
+    display:table;
+    height: 100%;
+    width: 100%;
+    pointer-events:none; /* This makes sure that we can still click outside of the modal to close it */
+}
+.vertical-align-center {
+    /* To center vertically */
+    display: table-cell;
+    vertical-align: middle;
+    pointer-events:none;
+}
+.modal-content {
+    /* Bootstrap sets the size of the modal in the modal-dialog class, we need to inherit it */
+    width:inherit;
+    height:inherit;
+    /* To center horizontally */
+    margin: 0 auto;
+    pointer-events: all;
+    margin-bottom:15%;
+}
+.modal-body input{
+    padding:4px 9px;
+    margin:5px;
+    border:1px solid #ddd;
+    border-radius:3px;
+    width:249px;
+    color:#444;
+}
+.btn-secondary{
+    border:1px solid #ddd;
+    background-color:#eee;
+}
+button.btn-primary{
+    text-shadow:0px 0px 5px rgba(0,0,0,.3);
+}
+.modal h4{
+    color:#444;
+}
+/* selectize */
+.selectize-input.items{
+    border-radius:3px;
+    text-align:left;
+    margin:5px;
+}
+
+.selectize-dropdown{
+    text-align:left;
+}
+.selectize-input{
+    padding:4px 9px;
+    min-height:31px;
+    width:249px;
+    border:1px solid #ddd;
+}
+.selectize-control.multi .selectize-input.has-items{
+    padding:3px 9px 3px;
+}
+.selectize-dropdown{
+    margin-left:5px;
+}
+.selectize-control.multi .selectize-input > div{
+    padding:0px 3px;
+    font-size:13px;
+    background-color:#eee;
+    margin:1px 3px 2px 0;
+}

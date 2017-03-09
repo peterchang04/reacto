@@ -48,7 +48,7 @@ it('Catches required keys when defined', (done) => {
 			{personID:['invalid',true]}
 		);
 	}catch(e){
-		expect(e).toEqual('personID is required.');
+		expect(e).toEqual('personid is required.');
 		done();
 	}
 });

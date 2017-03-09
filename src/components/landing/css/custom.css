@@ -1,0 +1,8 @@
+img#logo{
+	display:inline-block;
+}
+.navbar-custom a.navbar-brand{
+	font-family:"Roboto Slab", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size:20px;
+	color:#F2BE35;
+}
