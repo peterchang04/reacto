@@ -5,19 +5,20 @@ import {$,Form,Modal,Validate,Request} from '../../clientSide/$$';
 class C extends Component {
 	render() {
 		return (
-			<div className="modal fade" id="createModal" tabIndex="-1" role="dialog">
+			<div className="modal fade" id="createModal" tabIndex="-1" role="dialog" data-backdrop="static">
 				<div id="fb-root"></div>
 
 				<form id="createForm" className="vertical-alignment-helper">
 					<div className="modal-dialog modal-sm vertical-align-center" role="document">
 						<div className="modal-content">
 							<div className="modal-body">
+								<i className="fa fa-times-circle closeModal" data-target="#createModal" data-toggle="modal"></i>
 								<h4>Almost there...</h4>
-								<input id="email" name="email" placeholder="email" data-valid="required,email" />
-								<input id="password" type="password" name="password" placeholder="password" data-valid="required,password" />
 								<input id="first_name" type="text" name="first_name" placeholder="first name" data-valid="required" />
 								<input id="last_name" type="text" name="last_name" placeholder="last name" data-valid="required" />
 								<input id="instrument" type="text" name="instrumentIDs" placeholder="instrument / voice" data-valid="required" />
+								<input id="email" name="email" placeholder="email" data-valid="required,email" />
+								<input id="password" type="password" name="password" placeholder="password" data-valid="required,password" />
 							</div>
 							<div className="modal-footer">
 								<button type="button" className="btn btn-sm btn-secondary pull-left">Login</button>
@@ -32,7 +33,7 @@ class C extends Component {
 	submit(){
 		if(Form.validate('createForm')){
 			var data = Form.getValue('createForm');
-			console.log(data);
+			data.method = "createPerson";
 			new Request({
 				method:"post",
 				path:'/person',

@@ -1,11 +1,17 @@
 var Query = require('../core/dbQuery');
 var Save = require('../core/dbQuerySave');
 var Remove = require('../core/dbQueryRemove');
-/*TODO - abstract out these to function calls against a DAO object personDAO */
+var Err = require("../core/err");
+var Auth = require('../core/auth');
+
 module.exports = {
 	getPerson:function(cb,args = {}){
-		var argDef = {id:["int",false]};
-		var c1 = args.id ? 'and person.id = @id' : '';
+		var argDef = {
+			id:["int",false],
+			email:["varchar",false]
+		};
+		var byID = args.id ? 'and person.id = @id' : '';
+		var byEmail = args.email ? 'and person.email = @email' : '';
 		var query = `
 			select 
 			person.*,
@@ -23,78 +29,48 @@ module.exports = {
 			,1,1,'') as instrument_ids
 			from person
 			where person.active = 1
-			${c1}
+
+			${byID}
+			${byEmail}
 		`;
 
 		new Query(query,args,argDef).run(cb);
-	},
-	postPerson:function(cb,args){
-		var newPerson = (!args.id) ? true : false;
-		var context = this;
-		var afterSaveInstruments = (res,err) =>{
-			if(err){
-				console.log(err);
-				return cb([],err);
-			} 
-			// finally
-			var payload = [{id:args.person_id}];
-			
-			cb(payload,err);
-		};
-
-		var afterClearInstruments = (res,err) => {
-			if(err){
-				console.log(err);
-				return cb([],err);
-			} 
-			this._savePersonInstruments(afterSaveInstruments,{
-				person_id:args.person_id,
-				instrumentids:args.instrumentids
-			});
-		};
-
-		var afterSavePerson = (res,err) =>{
-			if(err){
-				console.log(err);
-				return cb([],err);
-			} 
-			args.person_id = res[0].id;
-			this._clearPersonInstruments(afterClearInstruments,{
-				person_id:res[0].id
-			});
-		};
-
-		this._savePerson(afterSavePerson,{
-			first_name:args.first_name,
-			middle_name:args.middle_name,
-			last_name:args.last_name,
-			email:args.email
-		});
 	},
 	deletePerson:function(cb,args){
 		args.table = "person";
 		var argDef = {id:['int',true]};
 		new Remove(args,argDef).run(cb);
 	},
-	_savePerson:function(cb,args){
+	putPerson:function(cb,args){
 		args.table = 'person';
-		if(args.id){ //update
-			var argDef = {
-				id:["int",true],
-				first_name:['varchar',false],
-				middle_name:['varchar',false],
-				last_name:['varchar',false],
-				email:['varchar',false]
-			};
-		} else { // create
-			var argDef = {
-				first_name:['varchar',true],
-				middle_name:['varchar',false],
-				last_name:['varchar',true],
-				email:['varchar',true]
-			};
-		}
+		var argDef = {
+			id:["int",true],
+			first_name:['varchar',false],
+			middle_name:['varchar',false],
+			last_name:['varchar',false],
+			email:['varchar',false]
+		};
 		new Save(args,argDef).run(cb);
+	},
+	postPerson:function(cb,args){
+		// start
+		this._postPerson_1_checkEmail(cb,args);
+	},
+	_savePerson:function(cb,args){
+		args.table = "person";
+		var argDef = {
+			first_name:['varchar',true],
+			middle_name:['varchar',false],
+			last_name:['varchar',true],
+			email:['varchar',true]
+		};
+		new Save(args,argDef).run((res,err) => {
+			// validate teh result of function
+			if(res.length !== 1 || !res[0].id){
+				err = new Err('_savePerson did not produce a result','resultNotValid');
+			}
+			cb(res,err);
+		});
 	},
 	_savePersonInstruments:function(cb,args){
 		var instrumentIDs = args.instrumentids.split(',');
@@ -142,5 +118,74 @@ module.exports = {
 			instrument_id:["int",true]
 		}
 		new Save(args,argDef).run(cb);
+	},
+	_postPerson_1_checkEmail:function(cb,args){
+		// check args for email to check
+		if(!args.email){
+			var e = new Error('_postPerson_1_checkEmail email is required','argValFailed');
+			return cb([],e);
+		} 
+		// kick off checkEmail
+		this.getPerson((res,err) => {
+			if(res.length > 0){
+				var err = new Error('Email exists.','operationFailed');
+			}
+			if(err)	return cb([],err);
+
+			// begin next step
+			this._postPerson_2_savePerson(cb,args);
+		},{
+			email:args.email
+		});
+	},
+	_postPerson_2_savePerson:function(cb,args){
+		// kick off save person
+		this._savePerson((res,err) => {
+			if(err)	return cb([],err);
+			args.person_id = res[0].id;
+			// begin next step
+			this._postPerson_3_clearPersonInstruments(cb,args);
+		},{
+			first_name:args.first_name,
+			middle_name:args.middle_name,
+			last_name:args.last_name,
+			email:args.email
+		});
+	},
+	_postPerson_3_clearPersonInstruments:function(cb,args){
+		// check args for person_id
+		if(!args.person_id){
+			err = new Err('_postPerson_3_clearPersonInstruments person_id is required','argValFailed')
+		}
+		// kick off clear instruments
+		this._clearPersonInstruments((res,err) => {
+			if(err) return cb([],err);
+			// begin next step
+			this._postPerson_4_savePersonInstruments(cb,args);
+		},{
+			person_id:args.person_id
+		});
+	},
+	_postPerson_4_savePersonInstruments:function(cb,args){
+		// check args for person_id
+		if(!args.person_id){
+			err = new Err('_postPerson_4_savePersonInstruments person_id is required','argValFailed')
+		}
+		// kick off save instruments. it ends here
+		this._savePersonInstruments((res,err) => {
+			if(err) return cb([],err);
+			if(!args.person_id){
+				err = new Err('postPerson did not result in a personID','resultNotValid');
+				return cb([],err);
+			}
+			// set up the result.
+			cb([{
+				id:args.person_id,
+				auth:Auth.generate(args.person_id)
+			}],err);
+		},{
+			instrumentids:args.instrumentids,
+			person_id:args.person_id
+		});
 	}
-}
+} 

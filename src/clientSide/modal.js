@@ -4,13 +4,12 @@ var Modal = (function(){
 		init:function(){
 			$(() => {
 				this.activateModals();
-			})
-			return this;
+			});
 		},
 		activateModals:function(){
 			var $modals = $('.modal').not('[data-initted="true"]');
+			$modals.attr('data-initted',true);
 			$modals.on('shown.bs.modal',function(){
-				$(this).data('data-initted',true);
 				$(this).find("input:first").focus();
 			});
 		}

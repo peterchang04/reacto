@@ -1,5 +1,6 @@
-import Request from '../core/httpRequest';
+var Request = require('../core/httpRequest');
 var RL = require('../core/restListener');
+var Auth = require('../core/auth');
 
 it('Needs some time for the Listener to spin up',function(done){
 	setTimeout(function(){
@@ -8,7 +9,7 @@ it('Needs some time for the Listener to spin up',function(done){
 });
 
 var personID = '';
-it('can create a person',function(done){
+it('can save a new person _savePerson',function(done){
 	expect.assertions(1);
 	new Request({
 		method:"post",
@@ -54,7 +55,49 @@ it('can verifies created person',function(done){
 	});
 });
 
-it('can create instruments',function(done){
+it('can update person putPerson',function(done){
+	expect.assertions(1);
+	new Request({
+		path:"/person",
+		method:"put",
+		data:{
+			id:personID,
+			first_name:"Test_First2"
+		},
+		complete:function(res,err){
+			if(!err && res.length === 1){
+				expect(1).toEqual(1);
+			}
+			done();
+		}
+	});
+});
+
+it('can verifies updated person',function(done){
+	expect.assertions(1);
+	new Request({
+		path:"/person",
+		data:{
+			id:personID
+		},
+		complete:function(res,err){
+			if(
+				!err 
+				&& res.length == 1
+				&& res[0].first_name === 'Test_First2'
+				&& res[0].middle_name === 'Test_Middle'
+				&& res[0].last_name === "Test_L'ast"
+				&& res[0].email === 'test@test.com'
+				&& res[0].instrument_ids === null
+			){
+				expect(1).toEqual(1);
+			}
+			done();
+		}
+	});
+});
+
+it('can create instruments _savePersonInstrument',function(done){
 	expect.assertions(1);
 	new Request({
 		path:"/person",
@@ -84,7 +127,7 @@ it('can verifies created instrument',function(done){
 			if(
 				!err 
 				&& res.length == 1
-				&& res[0].first_name === 'Test_First'
+				&& res[0].first_name === 'Test_First2'
 				&& res[0].middle_name === 'Test_Middle'
 				&& res[0].last_name === "Test_L'ast"
 				&& res[0].email === 'test@test.com'
@@ -97,7 +140,7 @@ it('can verifies created instrument',function(done){
 	});
 });
 
-it('can save multiple instruments',function(done){
+it('can save multiple instruments _savePersonInstruments',function(done){
 	expect.assertions(1);
 	new Request({
 		path:"/person",
@@ -127,7 +170,7 @@ it('can verifies multiple instruments',function(done){
 			if(
 				!err 
 				&& res.length == 1
-				&& res[0].first_name === 'Test_First'
+				&& res[0].first_name === 'Test_First2'
 				&& res[0].middle_name === 'Test_Middle'
 				&& res[0].last_name === "Test_L'ast"
 				&& res[0].email === 'test@test.com'
@@ -140,7 +183,7 @@ it('can verifies multiple instruments',function(done){
 	});
 });
 
-it('can clear instruments',function(done){
+it('can clear instruments _clearPersonInstruments',function(done){
 	expect.assertions(1);
 	new Request({
 		path:"/person",
@@ -169,7 +212,7 @@ it('can verifies clearing instruments',function(done){
 			if(
 				!err 
 				&& res.length == 1
-				&& res[0].first_name === 'Test_First'
+				&& res[0].first_name === 'Test_First2'
 				&& res[0].middle_name === 'Test_Middle'
 				&& res[0].last_name === "Test_L'ast"
 				&& res[0].email === 'test@test.com'
@@ -182,7 +225,7 @@ it('can verifies clearing instruments',function(done){
 	});
 });
 
-it('can delete a person',function(done){
+it('can delete a person deletePerson',function(done){
 	expect.assertions(1);
 	new Request({
 		method:"delete",
@@ -203,7 +246,9 @@ it('can delete a person',function(done){
 });
 
 var personID = '';
-it('can put it all together',function(done){
+var date = new Date();
+var email = 'p'+date.valueOf()+'@test.com';
+it('can put it all together postPerson',function(done){
 	expect.assertions(1);
 	new Request({
 		method:"post",
@@ -212,11 +257,14 @@ it('can put it all together',function(done){
 			first_name:"Test_First2",
 			middle_name:"Test_Middle2",
 			last_name:"Test_L'ast2",
-			email:"test@test.com2",
+			email:email,
 			instrumentIDs:"1,4"
 		},
 		complete:function(res,err){
-			if(!err && res.length === 1){
+			if(!err 
+				&& res.length === 1
+				&& Auth.verify(res[0].auth).token.sub === res[0].id
+			){
 				personID = res[0].id;
 				expect(1).toEqual(1);
 			}
@@ -239,7 +287,7 @@ it('can verify it all',function(done){
 				&& res[0].first_name === 'Test_First2'
 				&& res[0].middle_name === 'Test_Middle2'
 				&& res[0].last_name === "Test_L'ast2"
-				&& res[0].email === 'test@test.com2'
+				&& res[0].email === email
 				&& res[0].instrument_ids === '1,4'
 			){
 				expect(1).toEqual(1);

@@ -1,8 +1,20 @@
+CURRENTLY
+
+- logging
+- error generating
+
+
+NEXT
+- switch to (err,res)
 - add session jwt cookie
 - deploy on aws
 - design components
 - database caching?
+- performance testing
 
 LATER
 - integrate with facebook auth
-- db transactions
+- db transactions 
+
+DONE
+- update for PUT vs POST
