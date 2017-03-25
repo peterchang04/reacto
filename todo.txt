@@ -1,16 +1,19 @@
 CURRENTLY
-
-- logging
-- error generating
-
+- update daos to use crud based functions create remove update delete
+- reorg project
+- look at sing assets for main project (remove from public)
+- connect service layer
+- tedious connection pooling
+- add session jwt cookie
 
 NEXT
 - switch to (err,res)
-- add session jwt cookie
+- error types inheritance
 - deploy on aws
 - design components
 - database caching?
 - performance testing
+- logging
 
 LATER
 - integrate with facebook auth
@@ -18,3 +21,4 @@ LATER
 
 DONE
 - update for PUT vs POST
+- error generating

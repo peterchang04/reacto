@@ -1,1 +1,0 @@
-var RL = require('./src/core/restListener');

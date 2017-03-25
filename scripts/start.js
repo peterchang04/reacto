@@ -313,4 +313,4 @@ detect(DEFAULT_PORT).then(port => {
 });
 
 
-require('../src/core/restListener.js');
+require('../rest/core/restListener.js');
