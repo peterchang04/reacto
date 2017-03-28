@@ -35,4 +35,5 @@
 ### POSTPONED ###
 * integration with facebook auth
 * db transactions
+* switch to 3 branch GIT
 
