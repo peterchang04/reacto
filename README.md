@@ -1,10 +1,4 @@
-# DONE #
-* REST listener
-* REST project organized
-* Deploy db on RDS
-* Deploy EC2 server
-
-#Mu.city#
+# Mu.city #
 
 ### folder structure ###
 * react // react core files
