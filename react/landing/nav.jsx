@@ -16,7 +16,7 @@ class C extends Component {
 						</button>
 						<a className="navbar-brand page-scroll" href="#page-top">
 							<img id="logo" src={logo} alt="" />
-							uz.io
+							u.city
 						</a>
 					</div>
 
