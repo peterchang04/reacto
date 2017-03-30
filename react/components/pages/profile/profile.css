@@ -1,0 +1,15 @@
+section.user-profile img{
+	border-radius:50%;
+	height:140px;
+	border:6px solid white;
+	position:absolute;
+	z-index:10;
+	top:23px;
+	left:23px;
+}
+.widget.user-profile{
+	background:url(./banner.jpg) no-repeat 0px -120px;
+	height:145px;
+	position:relative;
+	margin-bottom:0px;
+}
