@@ -1,9 +1,8 @@
 CURRENTLY
 - update daos to use crud based functions create remove update delete
-- reorg project
 - look at sing assets for main project (remove from public)
 - connect service layer
-- tedious connection pooling
+- tedious switch to connection pooling
 - add session jwt cookie
 
 NEXT
