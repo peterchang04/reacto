@@ -311,6 +311,3 @@ detect(DEFAULT_PORT).then(port => {
     console.log(chalk.red('Something is already running on port ' + DEFAULT_PORT + '.'));
   }
 });
-
-
-require('../rest/core/restListener.js');
